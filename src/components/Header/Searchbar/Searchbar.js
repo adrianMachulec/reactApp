@@ -6,7 +6,7 @@ function Searchbar() {
         type="text"
         placeholder="Szukaj..."
       />
-      <button className="btn btn-primary">Szukaj</button>
+      <button className="btn btn-secondary ms-1">Szukaj</button>
     </div>
   );
 }
