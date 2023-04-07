@@ -1,9 +1,12 @@
+import styles from "./Header.module.css";
+import Searchbar from "./Searchbar/Searchbar";
+
 function Header() {
-    return(
-        <div>
-            Header
-        </div>
-    )
+  return (
+    <header className={`${styles.header} container`}>
+      <Searchbar />
+    </header>
+  );
 }
 
-export default Header
+export default Header;

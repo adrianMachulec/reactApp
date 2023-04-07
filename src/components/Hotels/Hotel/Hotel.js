@@ -1,6 +1,8 @@
+import styles from './Hotel.module.css'
+
 function Hotel() {
     return(
-        <div>
+        <div className={styles.hotel}>
             Hotel
         </div>
     )
