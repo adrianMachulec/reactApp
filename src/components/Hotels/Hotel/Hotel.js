@@ -1,7 +1,15 @@
+import PropTypes from 'prop-types'
 import styles from "./Hotel.module.css";
 import hotelImg from "../../../assets/images/hotel.jpg";
 
-function Hotel() {
+const propTypes = {
+  name: PropTypes.string.isRequired,
+  city: PropTypes.string.isRequired,
+  rating: PropTypes.number.isRequired,
+  description: PropTypes.string.isRequired
+}
+
+function Hotel(props) {
   return (
     <div className={`card ${styles.hotel}`}>
       <div className="card-body">
@@ -12,11 +20,11 @@ function Hotel() {
           <div className="col-8">
             <div className="row">
               <div className="col">
-                <p className={styles.title}>Pensjonat</p>
-                <span className="badge text-bg-light">Light</span>
+                <p className={styles.title}>{props.name}</p>
+                <span className="badge text-bg-light">{props.city}</span>
               </div>
               <div className="col text-end">
-                <h5>Ocena: 8.3</h5>
+                <h5>{props.rating}</h5>
                 <a href="/" className="btn btn-primary mt-2 px-5">
                   Pokaż
                 </a>
@@ -25,9 +33,7 @@ function Hotel() {
           </div>
           <div className="col-12">
             <p className={styles.description}>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent
-              vestibulum, risus vitae venenatis pulvinar, neque velit laoreet
-              quam, a blandit enim dolor ac ligula.
+            {props.description}
             </p>
           </div>
         </div>
@@ -35,5 +41,7 @@ function Hotel() {
     </div>
   );
 }
+
+Hotel.propTypes = propTypes
 
 export default Hotel;
