@@ -25,7 +25,7 @@ function Hotel(props) {
               </div>
               <div className="col text-end">
                 <h5>{props.rating}</h5>
-                <a href="/" className="btn btn-primary mt-2 px-5">
+                <a href="/" className={`btn btn-${props.theme} mt-2 px-5`}>
                   Pokaż
                 </a>
               </div>
