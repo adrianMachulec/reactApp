@@ -1,15 +1,18 @@
-import PropTypes from 'prop-types'
+import PropTypes from "prop-types";
 import styles from "./Hotel.module.css";
 import hotelImg from "../../../assets/images/hotel.jpg";
+import ThemeContext from "../../../context/themeContext";
+import { useContext } from "react";
 
 const propTypes = {
   name: PropTypes.string.isRequired,
   city: PropTypes.string.isRequired,
   rating: PropTypes.number.isRequired,
-  description: PropTypes.string.isRequired
-}
+  description: PropTypes.string.isRequired,
+};
 
 function Hotel(props) {
+  const theme = useContext(ThemeContext);
   return (
     <div className={`card ${styles.hotel}`}>
       <div className="card-body">
@@ -25,16 +28,14 @@ function Hotel(props) {
               </div>
               <div className="col text-end">
                 <h5>{props.rating}</h5>
-                <a href="/" className={`btn btn-${props.theme} mt-2 px-5`}>
+                <a href="/" className={`btn btn-${theme.color} mt-2 px-5`}>
                   Pokaż
                 </a>
               </div>
             </div>
           </div>
           <div className="col-12">
-            <p className={styles.description}>
-            {props.description}
-            </p>
+            <p className={styles.description}>{props.description}</p>
           </div>
         </div>
       </div>
@@ -42,6 +43,6 @@ function Hotel(props) {
   );
 }
 
-Hotel.propTypes = propTypes
+Hotel.propTypes = propTypes;
 
 export default Hotel;

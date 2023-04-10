@@ -1,4 +1,4 @@
-import { Component } from "react";
+import React, { Component } from "react";
 import "./App.scss";
 import Header from "./components/Header/Header";
 import Footer from "./components/Footer/Footer";
@@ -8,8 +8,11 @@ import LoadingIcon from "./components/UI/LoadingIcon/LoadingIcon";
 import Searchbar from "./components/UI/Searchbar/Searchbar";
 import Layout from "./components/Layout/Layout";
 import ThemeButton from "./components/UI/ThemeButton/ThemeButton";
+import ThemeContext from "./context/themeContext";
 
 class App extends Component {
+  static contextType = ThemeContext;
+
   hotels = [
     {
       id: 1,
@@ -51,32 +54,44 @@ class App extends Component {
   }
 
   changeTheme = () => {
-    const newTheme = this.state.theme === 'primary' ? 'danger' : 'primary'
-    this.setState({theme: newTheme})
-  }
+    const newTheme = this.state.theme === "primary" ? "danger" : "primary";
+    this.setState({ theme: newTheme });
+  };
 
   render() {
+    const header = (
+      <Header onSearch={(term) => this.searchHandler(term)}>
+        <Searchbar onSearch={(term) => this.searchHandler(term)} />
+        <ThemeButton />
+      </Header>
+    );
+
+    const menu = (
+      <Menu />
+    )
+
+    const content = this.state.loading ? (
+      <LoadingIcon />
+    ) : (
+      <Hotels hotels={this.state.hotels} />
+    );
+
+    const footer = (
+      <Footer />
+    )
+
     return (
-      <Layout
-        header={
-          <Header onSearch={(term) => this.searchHandler(term)}>
-            <Searchbar
-              onSearch={(term) => this.searchHandler(term)}
-              theme={this.state.theme}
-            />
-            <ThemeButton onChange={this.changeTheme} />
-          </Header>
-        }
-        menu={<Menu theme={this.state.theme} />}
-        content={
-          this.state.loading ? (
-            <LoadingIcon theme={this.state.theme} />
-          ) : (
-            <Hotels hotels={this.state.hotels} theme={this.state.theme} />
-          )
-        }
-        footer={<Footer theme={this.state.theme} />}
-      />
+      <ThemeContext.Provider value={{
+        color: this.state.theme,
+        changeTheme: this.changeTheme
+      }}>
+        <Layout
+          header={header}
+          menu={menu}
+          content={content}
+          footer={footer}
+        />
+      </ThemeContext.Provider>
     );
   }
 }
