@@ -9,6 +9,11 @@
     display: inline-block;
 }
 
+.menuItem a{
+    color: gray;
+    margin: 0 15px;
+}
+
 .menuContainer{
     border: 1px solid gainsboro;
     margin: 10px 0;

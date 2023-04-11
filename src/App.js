@@ -9,10 +9,9 @@ import Searchbar from "./components/UI/Searchbar/Searchbar";
 import Layout from "./components/Layout/Layout";
 import ThemeButton from "./components/UI/ThemeButton/ThemeButton";
 import ThemeContext from "./context/themeContext";
+import AuthContext from "./context/authContext";
 
 class App extends Component {
-  static contextType = ThemeContext;
-
   hotels = [
     {
       id: 1,
@@ -38,6 +37,7 @@ class App extends Component {
     hotels: [],
     loading: true,
     theme: "danger",
+    isAuthenticated: false
   };
 
   searchHandler(term) {
@@ -66,9 +66,7 @@ class App extends Component {
       </Header>
     );
 
-    const menu = (
-      <Menu />
-    )
+    const menu = <Menu />;
 
     const content = this.state.loading ? (
       <LoadingIcon />
@@ -76,22 +74,29 @@ class App extends Component {
       <Hotels hotels={this.state.hotels} />
     );
 
-    const footer = (
-      <Footer />
-    )
+    const footer = <Footer />;
 
     return (
-      <ThemeContext.Provider value={{
-        color: this.state.theme,
-        changeTheme: this.changeTheme
-      }}>
-        <Layout
-          header={header}
-          menu={menu}
-          content={content}
-          footer={footer}
-        />
-      </ThemeContext.Provider>
+      <AuthContext.Provider 
+        value={{
+          isAuthenticated: this.state.isAuthenticated,
+          login: () => this.setState({isAuthenticated: true}),
+          logout: () => this.setState({isAuthenticated: false})
+        }}>
+        <ThemeContext.Provider
+          value={{
+            color: this.state.theme,
+            changeTheme: this.changeTheme,
+          }}
+        >
+          <Layout
+            header={header}
+            menu={menu}
+            content={content}
+            footer={footer}
+          />
+        </ThemeContext.Provider>
+      </AuthContext.Provider>
     );
   }
 }
