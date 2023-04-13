@@ -1,7 +1,25 @@
-const BestHotel = (props) => {
-  const hotel = props.getHotel({minHotels: 1});
+import { useEffect, useState } from "react";
+import moment from "moment";
 
-  if (!hotel) return null;
+const BestHotel = (props) => {
+  const endTime = moment().add(23, 'minutes').add(34, 'seconds')
+
+  const [time, setTime] = useState('')
+  const hotel = props.getHotel();
+  let interval = null
+
+  useEffect(() => {
+    interval = setInterval(() => {
+      const leftTime = -moment().diff(endTime) / 1000
+      const minutes = Math.floor(leftTime / 60)
+      const seconds = Math.floor(leftTime % 60)
+      setTime(`${minutes} minut ${seconds} sekund`)
+    }, 1000)
+
+    return () => {
+      clearInterval(interval)
+    }
+  }, [])
 
   return (
     <div className="card bg-success text-white">
@@ -11,6 +29,7 @@ const BestHotel = (props) => {
           <h5 className="card-title">{hotel.name}</h5>
           <p>Ocena: {hotel.rating}</p>
         </div>
+        <p>Do końca oferty pozostało: {time}.</p>
         <a href="/" className="btn btm-sm btn-light">
           Pokaż
         </a>
