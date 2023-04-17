@@ -16,7 +16,7 @@ function Hotels(props) {
     <div className={styles.container}>
       <h2 className={styles.title}>Oferty({count}):</h2>
       {props.hotels.map((hotel) => (
-        <Hotel key={hotel.id} {...hotel} theme={props.theme} />
+        <Hotel key={hotel.id} {...hotel} theme={props.theme} onOpen={props.onOpen} />
       ))}
     </div>
   );

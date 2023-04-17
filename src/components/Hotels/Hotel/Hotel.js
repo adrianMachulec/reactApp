@@ -15,6 +15,11 @@ const propTypes = {
 function Hotel(props) {
   const theme = useContext(ThemeContext);
   const [auth] = useAuth()
+  
+  const clickHandler = (e) => {
+    e.preventDefault()
+    props.onOpen(props)
+  }
 
   return (
     <div className={`card ${styles.hotel}`}>
@@ -31,7 +36,7 @@ function Hotel(props) {
               </div>
               <div className="col text-end">
                 <h5>{props.rating}</h5>
-                <a href="/" className={`btn btn-${theme.color} mt-2 px-5`}>
+                <a href="/" onClick={clickHandler} className={`btn btn-${theme.color} mt-2 px-5`}>
                   Pokaż
                 </a>
               </div>
