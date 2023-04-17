@@ -12,6 +12,7 @@ import ThemeContext from "./context/themeContext";
 import AuthContext from "./context/authContext";
 import BestHotel from "./components/Hotels/BestHotel/BestHotel";
 import InspiringQuote from "./components/InspiringQuote/InspiringQuote";
+import useStateStorage from "./hooks/useStateStorage";
 
 const backendHotels = [
   {
@@ -67,12 +68,13 @@ const reducer = (state, action) => {
 const initialState = {
   hotels: [],
   loading: true,
-  isAuthenticated: false,
+  isAuthenticated: true,
   theme: "danger",
 };
 
 function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
+  const [storage, setStorage] = useStateStorage('klucz', 'wartość startowa')
 
   useEffect(() => {
     setTimeout(() => {
@@ -110,6 +112,7 @@ function App() {
     <LoadingIcon />
   ) : (
     <>
+      {storage}
       {getBestHotel() ? <BestHotel getHotel={getBestHotel} /> : null}
       <Hotels hotels={state.hotels} />
     </>
