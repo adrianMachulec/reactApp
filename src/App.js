@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useReducer } from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "./App.scss";
 import Header from "./components/Header/Header";
 import Footer from "./components/Footer/Footer";
@@ -76,8 +77,8 @@ const initialState = {
 
 function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const [lastHotel, setLastHotel] = useStateStorage('last-hotel', null)
-  useWebsiteTitle('Strona główna')
+  const [lastHotel, setLastHotel] = useStateStorage("last-hotel", null);
+  useWebsiteTitle("Strona główna");
 
   useEffect(() => {
     setTimeout(() => {
@@ -102,12 +103,12 @@ function App() {
   }, [state.hotels]);
 
   const openHotel = (hotel) => {
-    setLastHotel(hotel)
-  }
+    setLastHotel(hotel);
+  };
 
   const removeLastHotel = () => {
-    setLastHotel(null)
-  }
+    setLastHotel(null);
+  };
 
   const header = (
     <Header>
@@ -119,38 +120,54 @@ function App() {
 
   const menu = <Menu />;
 
-  const content = state.loading ? (
-    <LoadingIcon />
-  ) : (
-    <>
-      {lastHotel ? <LastHotel {...lastHotel} onRemove={removeLastHotel} /> : null}
-      {getBestHotel() ? <BestHotel getHotel={getBestHotel} /> : null}
-      <Hotels onOpen={openHotel} hotels={state.hotels} />
-    </>
+  const content = (
+    <Routes>
+      <Route
+        path="/"
+        element={
+          <>
+            {lastHotel ? (
+              <LastHotel {...lastHotel} onRemove={removeLastHotel} />
+            ) : null}
+            {getBestHotel() ? <BestHotel getHotel={getBestHotel} /> : null}
+            <Hotels onOpen={openHotel} hotels={state.hotels} />
+          </>
+        }
+      />
+
+      <Route path="/hotel/:id" element={<h1>To jest jakiś hotel!</h1>} />
+    </Routes>
   );
 
   const footer = <Footer />;
 
   return (
-    <AuthContext.Provider
-      value={{
-        isAuthenticated: state.isAuthenticated,
-        login: () => dispatch({ type: "login" }),
-        logout: () => dispatch({ type: "logout" }),
-      }}
-    >
-      <ThemeContext.Provider
+    <Router>
+      <AuthContext.Provider
         value={{
-          color: state.theme,
-          changeTheme: () =>
-            dispatch({
-              type: "change-theme",
-            }),
+          isAuthenticated: state.isAuthenticated,
+          login: () => dispatch({ type: "login" }),
+          logout: () => dispatch({ type: "logout" }),
         }}
       >
-        <Layout header={header} menu={menu} content={content} footer={footer} />
-      </ThemeContext.Provider>
-    </AuthContext.Provider>
+        <ThemeContext.Provider
+          value={{
+            color: state.theme,
+            changeTheme: () =>
+              dispatch({
+                type: "change-theme",
+              }),
+          }}
+        >
+          <Layout
+            header={header}
+            menu={menu}
+            content={state.loading ? <LoadingIcon /> : content}
+            footer={footer}
+          />
+        </ThemeContext.Provider>
+      </AuthContext.Provider>
+    </Router>
   );
 }
 
