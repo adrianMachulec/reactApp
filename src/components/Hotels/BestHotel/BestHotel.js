@@ -6,9 +6,9 @@ const BestHotel = (props) => {
 
   const [time, setTime] = useState('')
   const hotel = props.getHotel();
-  let interval = null
-
+  
   useEffect(() => {
+    let interval = null
     interval = setInterval(() => {
       const leftTime = -moment().diff(endTime) / 1000
       const minutes = Math.floor(leftTime / 60)
@@ -19,10 +19,11 @@ const BestHotel = (props) => {
     return () => {
       clearInterval(interval)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
-    <div className="card bg-success text-white">
+    <div className="card bg-success text-white mt-2">
       <div className="card-header">Najlepsza oferta!</div>
       <div className="card-body">
         <div className="d-flex justify-content-between">
