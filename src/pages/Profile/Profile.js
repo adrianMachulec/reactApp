@@ -23,8 +23,6 @@ export default function Profile(props) {
         <div className="pt-4">
           <Outlet />
         </div>
-
-        <p>...</p>
       </div>
     </div>
   );

@@ -1,5 +1,10 @@
-import React, { useReducer } from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import React, { useReducer, lazy, Suspense } from "react";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Navigate,
+} from "react-router-dom";
 import "./App.scss";
 import Header from "./components/Header/Header";
 import Footer from "./components/Footer/Footer";
@@ -15,10 +20,13 @@ import { initialState, reducer } from "./reducer";
 import Home from "./pages/Home/Home";
 import Hotel from "./pages/Hotel/Hotel";
 import Search from "./pages/Search/Search";
-import Profile from "./pages/Profile/Profile";
 import ProfileDetails from "./pages/Profile/ProfileDetails/ProfileDetails";
 import MyHotels from "./pages/Profile/MyHotels/MyHotels";
 import NotFound from "./pages/NotFound/NotFound";
+import Login from "./pages/Auth/Login/Login";
+import ErrorBoundary from "./hoc/ErrorBoundary";
+
+const Profile = lazy(() => import("./pages/Profile/Profile"));
 
 function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -34,18 +42,27 @@ function App() {
   const menu = <Menu />;
 
   const content = (
-    <div>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/hotele/:id" element={<Hotel />} />
-        <Route path="/wyszukaj/:term?" element={<Search />} />
-        <Route path="profil" element={<Profile />}>
-          <Route path="" element={<ProfileDetails />} />
-          <Route path="hotele" element={<MyHotels />} />
-        </Route>
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </div>
+    <ErrorBoundary>
+      <Suspense fallback={<p>...</p>}>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/hotele/:id" element={<Hotel />} />
+          <Route path="/wyszukaj/:term?" element={<Search />} />
+
+          <Route
+            path="profil"
+            element={
+              state.isAuthenticated ? <Profile /> : <Navigate to="/zaloguj" />
+            }
+          >
+            <Route path="" element={<ProfileDetails />} />
+            <Route path="hotele" element={<MyHotels />} />
+          </Route>
+          <Route path="/zaloguj" element={<Login />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </Suspense>
+    </ErrorBoundary>
   );
 
   const footer = <Footer />;

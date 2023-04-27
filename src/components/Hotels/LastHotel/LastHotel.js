@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 function LastHotel(props) {
   return (
     <div className="card bg-light">
@@ -13,9 +15,9 @@ function LastHotel(props) {
           style={{ width: "100px" }}
           className="ml-auto d-flex justify-content-between"
         >
-          <a href="/" className="btn btm-sm btn-dark">
+          <Link to={`hotele/${props.id}`} className="btn btm-sm btn-dark">
             Tak
-          </a>
+          </Link>
           <button onClick={props.onRemove} className="btn btm-sm btn-dark">
             Nie
           </button>
