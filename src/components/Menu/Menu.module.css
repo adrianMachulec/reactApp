@@ -12,9 +12,14 @@
 .menuItem a{
     color: gray;
     margin: 0 15px;
+    text-decoration: none;
 }
 
 .menuContainer{
     border: 1px solid gainsboro;
     margin: 10px 0;
+}
+
+.menuItemActive {
+    text-decoration: underline !important;
 }

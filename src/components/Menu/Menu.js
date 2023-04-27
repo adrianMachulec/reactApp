@@ -1,31 +1,45 @@
 import styles from "./Menu.module.css";
 import useAuth from "../../hooks/useAuth";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 function Menu() {
-  const [auth, setAuth] = useAuth()
+  const [auth, setAuth] = useAuth();
 
   const login = (e) => {
     e.preventDefault();
-    setAuth(true)
+    setAuth(true);
   };
 
   const logout = (e) => {
     e.preventDefault();
-    setAuth(false)
+    setAuth(false);
   };
 
   return (
     <div className={`${styles.menuContainer} navbar bg-light`}>
       <ul className={styles.menu}>
         <li className={styles.menuItem}>
-          <Link to='/'>Home</Link>
+          <NavLink
+            to="/"
+            className={({ isActive }) => (isActive ? styles.menuItemActive : 'inactive')}
+            end
+          >
+            Home
+          </NavLink>
         </li>
         <li className={styles.menuItem}>
           {auth ? (
-            <a href="/" onClick={logout}>
-              Wyloguj
-            </a>
+            <>
+              <NavLink
+            to="/profil"
+            className={({ isActive }) => (isActive ? styles.menuItemActive : 'inactive')}
+          >
+            Mój profil
+          </NavLink>
+              <a href="/" onClick={logout}>
+                Wyloguj
+              </a>
+            </>
           ) : (
             <a href="/" onClick={login}>
               Zaloguj
