@@ -60,7 +60,7 @@ const InputCheckbox = (props) => {
             type="checkbox"
             className="custom-control-input"
             id={option.value}
-            checked={props.value.find(x => x === option.value) || false}
+            checked={props.value.find((x) => x === option.value) || false}
             onChange={changeFeaturesHandler}
           />
           <label className="custom-control-label ms-1" htmlFor={option.value}>
@@ -110,27 +110,31 @@ const InputRadio = (props) => {
   );
 };
 
-const InputTextArea = props => {
-    return (
-        <div className="form-group">
-          <label>{props.label}</label>
-          <textarea
-            value={props.value}
-            onChange={(e) => props.onChange(e.target.value)}
-            type={props.type}
-            className={`form-control ${
-              props.error && props.showError ? "is-invalid" : ""
-            }`}
-          />
-          <div className="invalid-feedback">{props.error}</div>
-        </div>
-      );
-}
+const InputTextArea = (props) => {
+  return (
+    <div className="form-group">
+      <label>{props.label}</label>
+      <textarea
+        value={props.value}
+        onChange={(e) => props.onChange(e.target.value)}
+        type={props.type}
+        className={`form-control ${
+          props.error && props.showError ? "is-invalid" : ""
+        }`}
+      />
+      <div className="invalid-feedback">{props.error}</div>
+    </div>
+  );
+};
 
 function Input(props) {
   switch (props.type) {
     case "select":
       return <InputSelect {...props} />;
+    case "password":
+      return <InputText {...props} />;
+    case "email":
+      return <InputText {...props} />;
     case "checkbox":
       return <InputCheckbox {...props} />;
     case "file":

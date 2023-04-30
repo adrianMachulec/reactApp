@@ -21,7 +21,9 @@ function Menu() {
         <li className={styles.menuItem}>
           <NavLink
             to="/"
-            className={({ isActive }) => (isActive ? styles.menuItemActive : 'inactive')}
+            className={({ isActive }) =>
+              isActive ? styles.menuItemActive : "inactive"
+            }
             end
           >
             Home
@@ -31,19 +33,39 @@ function Menu() {
           {auth ? (
             <>
               <NavLink
-            to="/profil"
-            className={({ isActive }) => (isActive ? styles.menuItemActive : 'inactive')}
-          >
-            Mój profil
-          </NavLink>
+                to="/profil"
+                className={({ isActive }) =>
+                  isActive ? styles.menuItemActive : "inactive"
+                }
+              >
+                Mój profil
+              </NavLink>
               <a href="/" onClick={logout}>
                 Wyloguj
               </a>
             </>
           ) : (
-            <a href="/" onClick={login}>
-              Zaloguj
-            </a>
+            <>
+              <NavLink
+                to="/rejestracja"
+                className={({ isActive }) =>
+                  isActive ? styles.menuItemActive : "inactive"
+                }
+                end
+              >
+                Zarejestruj
+              </NavLink>
+              <NavLink
+                to="/zaloguj"
+                onClick={login}
+                className={({ isActive }) =>
+                  isActive ? styles.menuItemActive : "inactive"
+                }
+                end
+              >
+                Zaloguj
+              </NavLink>
+            </>
           )}
         </li>
       </ul>
