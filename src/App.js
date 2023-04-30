@@ -25,6 +25,7 @@ import MyHotels from "./pages/Profile/MyHotels/MyHotels";
 import NotFound from "./pages/NotFound/NotFound";
 import Login from "./pages/Auth/Login/Login";
 import ErrorBoundary from "./hoc/ErrorBoundary";
+import AddHotel from "./pages/Profile/MyHotels/AddHotel/AddHotel";
 
 const Profile = lazy(() => import("./pages/Profile/Profile"));
 
@@ -48,6 +49,12 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/hotele/:id" element={<Hotel />} />
           <Route path="/wyszukaj/:term?" element={<Search />} />
+          <Route
+            path="profil/hotele/dodaj"
+            element={
+              state.isAuthenticated ? <AddHotel /> : <Navigate to="/zaloguj" />
+            }
+          />
 
           <Route
             path="profil"

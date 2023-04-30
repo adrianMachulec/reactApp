@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import LoadingButton from "../../../components/UI/LoadingButton/LoadingButton";
-import validateEmail from "../../../helpers/validations";
+import {validateEmail} from "../../../helpers/validations";
 
 export default function ProfileDetails(props) {
   const [email, setEmail] = useState("adi@wp.pl");
@@ -63,7 +63,7 @@ export default function ProfileDetails(props) {
         />
         <div className="invalid-feedback">{errors.password}</div>
       </div>
-      <LoadingButton loading={loading.toString()} disabled={buttonDisabled}>
+      <LoadingButton loading={loading} disabled={buttonDisabled}>
         Zapisz
       </LoadingButton>
     </form>
