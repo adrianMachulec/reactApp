@@ -1,4 +1,11 @@
-export const reducer = (state, action) => {
+import { createStore } from "redux";
+
+const initialState = {
+  user: JSON.parse(window.localStorage.getItem("token-data")) ?? null,
+  theme: "info",
+};
+
+const reducer = (state = initialState, action) => {
   switch (action.type) {
     case "change-theme":
       const theme = state.theme === "danger" ? "warning" : "danger";
@@ -14,11 +21,10 @@ export const reducer = (state, action) => {
         user: null,
       };
     default:
-      throw new Error("Nie ma takiej akcji: " + action.type);
+      return state
   }
 };
 
-export const initialState = {
-  user: JSON.parse(window.localStorage.getItem("token-data")) ?? null,
-  theme: "danger",
-};
+const store = createStore(reducer);
+
+export default store;
