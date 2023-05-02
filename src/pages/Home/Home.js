@@ -5,32 +5,12 @@ import BestHotel from "../../components/Hotels/BestHotel/BestHotel";
 import Hotels from "../../components/Hotels/Hotels";
 import { useCallback, useEffect, useState } from "react";
 import LoadingIcon from "../../components/UI/LoadingIcon/LoadingIcon";
-
-const backendHotels = [
-  {
-    id: 1,
-    name: "Pod akacjami",
-    city: "Warszawa",
-    rating: 8.3,
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent vestibulum, risus vitae venenatis pulvinar, neque velit laoreet quam, a blandit enim dolor ac ligula.",
-    image: "",
-  },
-  {
-    id: 2,
-    name: "Dębowy",
-    city: "Lublin",
-    rating: 8.8,
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent vestibulum, risus vitae venenatis pulvinar, neque velit laoreet quam, a blandit enim dolor ac ligula.",
-    image: "",
-  },
-];
+import axios from "../../axios";
+import { objectTransform } from "../../helpers/objectTransform";
 
 export default function Home(props) {
   useWebsiteTitle("Strona główna");
   const [lastHotel, setLastHotel] = useStateStorage("last-hotel", null);
-
   const [loading, setLoading] = useState(true);
   const [hotels, setHotels] = useState([]);
 
@@ -50,11 +30,21 @@ export default function Home(props) {
     setLastHotel(null);
   };
 
+  const fetchHotels = async () => {
+    try {
+      const res = await axios.get("hotels.json");
+
+      const newHotels = objectTransform(res.data);
+      setHotels(newHotels);
+    } catch (ex) {
+      console.log(ex.response);
+    }
+    setLoading(false);
+  };
+
   useEffect(() => {
-    setTimeout(() => {
-      setHotels(backendHotels);
-      setLoading(false);
-    }, 500);
+    fetchHotels();
+    // eslint-disable-next-line
   }, []);
 
   return loading ? (

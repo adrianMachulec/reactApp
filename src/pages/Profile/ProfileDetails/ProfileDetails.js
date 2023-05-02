@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import LoadingButton from "../../../components/UI/LoadingButton/LoadingButton";
-import {validateEmail} from "../../../helpers/validations";
+import { validateEmail } from "../../../helpers/validations";
 import useAuth from "../../../hooks/useAuth";
+import axios from "../../../axios-auth";
 
 export default function ProfileDetails(props) {
-  const [auth] = useAuth()
+  const [auth, setAuth] = useAuth();
   const [email, setEmail] = useState(auth.email);
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -12,14 +13,32 @@ export default function ProfileDetails(props) {
     email: "",
     password: "",
   });
+  const [success, setSuccess] = useState(false)
 
-  const submit = (e) => {
+  const submit = async (e) => {
     e.preventDefault();
     setLoading(true);
 
-    setTimeout(() => {
-      setLoading(false);
-    }, 500);
+    if (email !== auth.email || password) {
+      const data = {
+        idToken: auth.token,
+        returnSecureToken: true,
+      };
+      if(email) data.email = email
+      if(password) data.password = password
+      try {
+        const res = await axios.post("accounts:update", data);
+
+        setAuth({
+          email: res.data.email,
+          token: res.data.idToken,
+          userId: res.data.localId,
+        });
+        setSuccess(true)
+        setLoading(false);
+      } catch (ex) {
+      }
+    }
   };
 
   const buttonDisabled = Object.values(errors).filter((x) => x).length;
@@ -44,6 +63,7 @@ export default function ProfileDetails(props) {
 
   return (
     <form onSubmit={submit}>
+      {success ? <div className="alert alert-success mt-2">Dane zostały zmienione</div> : null}
       <div className="form-group">
         <label>Email</label>
         <input

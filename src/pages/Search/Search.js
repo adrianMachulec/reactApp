@@ -1,17 +1,43 @@
 import { useParams } from "react-router-dom";
+import { objectTransform } from "../../helpers/objectTransform";
+import axios from "../../axios";
+import { useEffect, useState } from "react";
+import Hotels from "../../components/Hotels/Hotels";
+import LoadingIcon from "../../components/UI/LoadingIcon/LoadingIcon";
 
 export default function Search(props) {
-  //   const searchHandler = (term) => {
-  //     const newHotels = [...backendHotels].filter((x) =>
-  //       x.name.toLowerCase().includes(term.toLowerCase())
-  //     );
-  //   };
-
+  const [hotels, setHotels] = useState([]);
+  const [loading, setLoading] = useState(true)
   const { term } = useParams();
 
-  return (
-    <div>
-      <h2>Wyniki dla frazy: "{term}"</h2>
-    </div>
+  const searchHandler = async () => {
+    try {
+      const res = await axios.get("hotels.json");
+
+      const newHotels = objectTransform(res.data).filter((hotel) =>
+        hotel.name.toLowerCase().includes(term.toLowerCase())
+      );
+      setHotels(newHotels);
+      setLoading(false)
+    } catch (ex) {
+      console.log(ex.response);
+    }
+  };
+
+  useEffect(()=>{
+    searchHandler()
+    // eslint-disable-next-line
+  }, [term])
+
+
+  return loading ? (
+    <LoadingIcon />
+  ) : (
+    <>
+      <div>
+        <h2>Wyniki dla frazy: "{term}"</h2>
+      <Hotels hotels={hotels} />
+      </div>
+    </>
   );
 }
