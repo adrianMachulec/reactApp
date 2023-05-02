@@ -7,13 +7,15 @@ import useAuth from "../../../hooks/useAuth";
 export default function MyHotels(props) {
   const url = useResolvedPath("").pathname;
   const [hotels, setHotels] = useState([]);
-  const [auth] = useAuth()
+  const [auth] = useAuth();
 
   const fetchHotels = async () => {
     try {
       const res = await axios.get("hotels.json");
 
-      const newHotels = objectTransform(res.data).filter(hotel => hotel.user_id === auth.userId);
+      const newHotels = objectTransform(res.data).filter(
+        (hotel) => hotel.user_id === auth.userId
+      );
       setHotels(newHotels);
     } catch (ex) {
       console.log(ex.response);
@@ -25,6 +27,15 @@ export default function MyHotels(props) {
     // eslint-disable-next-line
   }, []);
 
+  const deleteHandler = async (id) => {
+    try {
+      await axios.delete(`hotels/${id}.json`);
+      setHotels(hotels.filter((x) => x.id !== id));
+    } catch (ex) {
+      console.log(ex.response);
+    }
+  };
+
   return (
     <div>
       {hotels ? (
@@ -32,6 +43,7 @@ export default function MyHotels(props) {
           <thead>
             <tr>
               <th scope="col">Nazwa</th>
+              <th scope="col">Status</th>
               <th scope="col">Opcje</th>
             </tr>
           </thead>
@@ -39,9 +51,15 @@ export default function MyHotels(props) {
             {hotels.map((hotel) => (
               <tr key={hotel.id}>
                 <td>{hotel.name}</td>
+                <td>{hotel.status === 0 ? 'Nieaktywny' : 'Aktywny'}</td>
                 <td>
-                  <button className="btn btn-warning">Edytuj</button>
-                  <button className="ms-2 btn btn-primary">Edytuj</button>
+                  <Link to={`/profil/hotele/edytuj/${hotel.id}`} className="btn btn-warning">Edytuj</Link>
+                  <button
+                    className="ms-2 btn btn-danger"
+                    onClick={() => deleteHandler(hotel.id)}
+                  >
+                    Usuń
+                  </button>
                 </td>
               </tr>
             ))}

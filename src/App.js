@@ -26,6 +26,7 @@ import NotFound from "./pages/NotFound/NotFound";
 import Login from "./pages/Auth/Login/Login";
 import ErrorBoundary from "./hoc/ErrorBoundary";
 import AddHotel from "./pages/Profile/MyHotels/AddHotel/AddHotel";
+import EditHotel from "./pages/Profile/MyHotels/EditHotel/EditHotel";
 import Register from "./pages/Auth/Register/Register";
 
 const Profile = lazy(() => import("./pages/Profile/Profile"));
@@ -54,6 +55,12 @@ function App() {
             path="profil/hotele/dodaj"
             element={
               state.user ? <AddHotel /> : <Navigate to="/zaloguj" />
+            }
+          />
+          <Route
+            path="profil/hotele/edytuj/:id"
+            element={
+              state.user ? <EditHotel /> : <Navigate to="/zaloguj" />
             }
           />
 
