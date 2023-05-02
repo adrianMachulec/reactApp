@@ -18,14 +18,11 @@ export default function Login(props) {
     setLoading(true);
 
     try {
-      const res = await axios.post(
-        "accounts:signInWithPassword",
-        {
-          email,
-          password,
-          returnSecureToken: true,
-        }
-      );
+      const res = await axios.post("accounts:signInWithPassword", {
+        email,
+        password,
+        returnSecureToken: true,
+      });
 
       setAuth({
         email: res.data.email,
@@ -53,8 +50,9 @@ export default function Login(props) {
       ) : null}
       <form onSubmit={submit}>
         <div className="form-group">
-          <label>Email</label>
+          <label htmlFor="email-input">Email</label>
           <input
+            id="email-input"
             type="email"
             className="form-control"
             value={email}
