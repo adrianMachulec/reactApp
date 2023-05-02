@@ -1,12 +1,14 @@
 import axios from "../../../../axios";
 import { useNavigate } from "react-router-dom";
 import HotelForm from "../HotelForm";
+import useAuth from "../../../../hooks/useAuth";
 
 export default function AddHotel(props) {
   const nav = useNavigate();
+  const [auth] = useAuth()
 
   const submit = async form => {
-    await axios.post("./hotels.json", form);
+    await axios.post(`./hotels.json?auth=${auth.token}`, form);
       nav("../profil/hotele");
   }
 
