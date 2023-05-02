@@ -18,7 +18,9 @@ function Hotel(props) {
   const [auth] = useAuth()
   
   const clickHandler = (e) => {
-    props.onOpen(props)
+    if(props.onOpen){
+      props.onOpen(props)
+    }
   }
 
   return (
@@ -35,7 +37,7 @@ function Hotel(props) {
                 <span className="badge text-bg-light">{props.city}</span>
               </div>
               <div className="col text-end">
-                <h5>{props.rating}</h5>
+                <h5>Ocena: {props.rating ?? '-'}</h5>
                 <Link to={`/hotele/${props.id}`} className={`btn btn-${theme.color} mt-2 px-5`} onClick={clickHandler}>Pokaż</ Link>
                 
               </div>
@@ -44,7 +46,7 @@ function Hotel(props) {
           <div className="col-12">
             <p className={styles.description}>{props.description}</p>
             {auth
-              ? <p className="mt-2">Dostępność: 4 pokoje</p>
+              ? <p className="mt-2">Dostępność pokoi: {props.rooms}</p>
               : <p className="mt-2">Dostępność: zaloguj</p>}
           </div>
         </div>
