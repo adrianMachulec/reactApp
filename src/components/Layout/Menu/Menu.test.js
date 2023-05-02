@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import Menu from "./Menu";
 import { BrowserRouter as Router } from "react-router-dom";
-import AuthContext from "../../context/authContext";
+import AuthContext from "../../../context/authContext";
 
 describe("Menu component", () => {
   test("renders Zaloguj if user is null", () => {

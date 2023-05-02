@@ -1,10 +1,10 @@
 import axios from "axios";
 
 const instance = axios.create({
-    baseURL: 'https://identitytoolkit.googleapis.com/v1',
-    params: {
-        key: 'AIzaSyBG5YyNA32-gb9mtXd4Qe5ibHsbqOSyb9o'
-    }
-})
+  baseURL: "https://identitytoolkit.googleapis.com/v1",
+  params: {
+    key: process.env.REACT_APP_AUTH_KEY,
+  },
+});
 
-export default instance
+export default instance;

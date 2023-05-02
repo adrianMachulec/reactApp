@@ -10,7 +10,7 @@
 
 .headerImage{
     background-color: gainsboro;
-    background: url(../../assets/images/header.jpg) center;
+    background: url(../../../assets/images/header.jpg) center;
     background-size: 110%;
     position: absolute;
     top: -10%;
