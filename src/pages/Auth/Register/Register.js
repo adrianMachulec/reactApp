@@ -1,9 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import LoadingButton from "../../../components/UI/LoadingButton/LoadingButton";
 import { validate } from "../../../helpers/validations";
 import Input from "../../../components/Input/Input";
+import axiosFresh from "axios";
+import useAuth from "../../../hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 
 export default function Register(props) {
+  const nav = useNavigate();
+  const [auth, setAuth] = useAuth();
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({
     email: {
@@ -19,16 +24,37 @@ export default function Register(props) {
       rules: ["required"],
     },
   });
+  const [error, setError] = useState('')
 
-  const valid = !Object.values(form).map(input => input.error).filter(error => error).length
+  const valid = !Object.values(form)
+    .map((input) => input.error)
+    .filter((error) => error).length;
 
-  const submit = (e) => {
+  const submit = async (e) => {
     e.preventDefault();
     setLoading(true);
 
-    setTimeout(() => {
-      setLoading(false);
-    }, 500);
+    try {
+      const res = await axiosFresh.post(
+        "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBG5YyNA32-gb9mtXd4Qe5ibHsbqOSyb9o",
+        {
+          email: form.email.value,
+          password: form.password.value,
+          returnSecureToken: true,
+        }
+      );
+
+      setAuth(true, {
+        email: res.data.email,
+        token: res.data.idToken,
+        userId: res.data.localId,
+      });
+      nav("/");
+    } catch (ex) {
+      setError(ex.response.data.error.message)
+    }
+
+    setLoading(false);
   };
 
   const changeHandler = (value, fieldName) => {
@@ -44,6 +70,11 @@ export default function Register(props) {
       },
     });
   };
+
+  useEffect(()=>{
+    if(auth) nav('/')
+    // eslint-disable-next-line
+  }, [])
 
   return (
     <div className="card">
@@ -61,15 +92,25 @@ export default function Register(props) {
 
           <Input
             label="Hasło"
-            type='password'
+            type="password"
             value={form.password.value}
             onChange={(val) => changeHandler(val, "password")}
             error={form.password.error}
             showError={form.password.showError}
           />
 
+          {error ? (
+            <div className="alert alert-danger mt-2">
+              {error}
+            </div>
+          ) : null}
+
           <div className="text-end">
-            <LoadingButton className="btn-success" loading={loading} disabled={!valid}>
+            <LoadingButton
+              className="btn-success"
+              loading={loading}
+              disabled={!valid}
+            >
               Zarejestruj
             </LoadingButton>
           </div>
